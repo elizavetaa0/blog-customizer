@@ -17,6 +17,20 @@
 	transform: translate(616px);
 }
 
+.container:hover {
+	background-color: #FFC802;
+	transition: background-color ease-in-out 0.3s;
+}
+
+.container:not(:hover) {
+	background-color: #000000;
+	transition: background-color ease-in-out 0.3s;
+}
+
+.container:active {
+	background-color: #787878;
+}
+
 .arrow {
 	flex-shrink: 0;
 	width: 48px;
@@ -28,3 +42,4 @@
 .arrow_open {
 	transform: rotate(0deg);
 }
+
