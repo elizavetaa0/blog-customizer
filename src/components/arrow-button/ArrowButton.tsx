@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import arrow from 'src/images/arrow.svg';
 import styles from './ArrowButton.module.scss';
 
@@ -13,6 +13,7 @@ export const ArrowButton: React.FC<ArrowButtonProps> = ({ isOpen, onClick }) => 
   };
 
   const containerClassName = isOpen ? `${styles.container} ${styles.container_open}` : styles.container;
+  const arrowClassName = isOpen ? `${styles.arrow} ${styles.arrow_open}` : styles.arrow;
 
   return (
     <div
@@ -25,8 +26,9 @@ export const ArrowButton: React.FC<ArrowButtonProps> = ({ isOpen, onClick }) => 
       <img
         src={arrow}
         alt='иконка стрелочки'
-        className={isOpen ? styles.arrow_open : styles.arrow}
+        className={arrowClassName}
       />
     </div>
   );
 };
+
