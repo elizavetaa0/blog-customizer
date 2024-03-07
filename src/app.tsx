@@ -1,11 +1,10 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect, CSSProperties, useRef } from 'react';
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form';
 import { defaultArticleState, ArticleStateType } from './constants/articleProps';
 import clsx from 'clsx';
 import { ArrowButton } from './components/arrow-button';
 import styles from './styles/index.module.scss';
-
 
 export const App = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -17,7 +16,7 @@ export const App = () => {
     containerWidth: '--container-width',
     bgColour: '--bg-color'
   };
-  
+
   const [pageStyles, setPageStyles] = useState({
     [cssVariables.fontFamily]: defaultArticleState.fontFamilyOption.value,
     [cssVariables.fontSize]: defaultArticleState.fontSizeOption.value,
@@ -25,6 +24,8 @@ export const App = () => {
     [cssVariables.containerWidth]: defaultArticleState.contentWidth.value,
     [cssVariables.bgColour]: defaultArticleState.backgroundColor.value,
   });
+
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedState = localStorage.getItem('sideBarOpen');
@@ -35,18 +36,16 @@ export const App = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.querySelector('aside');
-  
       if (
         sideBarOpen &&
-        sidebar &&
-        !sidebar.contains(event.target as Node)
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
       ) {
         setSideBarOpen(false);
         localStorage.setItem('sideBarOpen', JSON.stringify(false));
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -69,12 +68,12 @@ export const App = () => {
 
   return (
     <main className={styles.main} style={pageStyles as CSSProperties}>
-      <div className={clsx(styles.container, { [styles.container_open]: sideBarOpen })}>
+      <div className={clsx(styles.container, { [styles.container_open]: sideBarOpen })} ref={sidebarRef}>
         <ArrowButton onClick={toggleSideBar} isOpen={sideBarOpen} />
         <ArticleParamsForm isOpen={sideBarOpen} toggleSideBar={toggleSideBar} applyStyles={applyStyles} />
       </div>
       <Article />
     </main>
   );
-  
+
 };
